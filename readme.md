@@ -16,7 +16,14 @@ $ composer require helaplus/laravelhelaplus
 ```
 
 ## Usage
-
+Add the following Configs
+``` bash
+B2B_INITIATOR
+B2B_PASSWORD
+B2B_SOURCE
+B2B_RESULT_URL
+B2B_CALLBACK_URL
+```
 ## Change log
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.
