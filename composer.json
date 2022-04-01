@@ -1,0 +1,41 @@
+{
+    "name": "helaplus/laravelhelaplus",
+    "description": ":package_description",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Author Name",
+            "email": "author@email.com",
+            "homepage": "http://author.com"
+        }
+    ],
+    "homepage": "https://github.com/helaplus/laravelhelaplus",
+    "keywords": ["Laravel", "Laravelhelaplus"],
+    "require": {
+        "illuminate/support": "~9"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~9.0",
+        "orchestra/testbench": "~9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Helaplus\\Laravelhelaplus\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Helaplus\\Laravelhelaplus\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Helaplus\\Laravelhelaplus\\LaravelhelaplusServiceProvider"
+            ],
+            "aliases": {
+                "Laravelhelaplus": "Helaplus\\Laravelhelaplus\\Facades\\Laravelhelaplus"
+            }
+        }
+    }
+}
