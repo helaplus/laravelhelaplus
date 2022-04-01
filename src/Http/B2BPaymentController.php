@@ -25,7 +25,7 @@ class B2BPaymentController extends Controller {
             ];
 
         return Http::withToken([
-            config('laravelhelaplus.b2b.helaplus_api_token')
+            config('laravelhelaplus.helaplus_api_token')
         ])->post(config('laravelhelaplus.b2b.result_url'),$data)->body();
 
     }
