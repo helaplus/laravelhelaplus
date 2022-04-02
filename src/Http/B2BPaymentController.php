@@ -22,11 +22,11 @@ class B2BPaymentController extends Controller {
             'Remarks'=> $reference,
             'AccountReference'=> $reference,
             'Occasion'=> $reference,
-            ];  
-
-        return Http::withToken([
+            ];
+ 
+        return Http::withToken(
             config('laravelhelaplus.helaplus_api_token')
-        ])->post(config('laravelhelaplus.b2b.result_url'),$data)->body();
+        )->post(config('laravelhelaplus.b2b.result_url'),$data)->body();
 
     }
 
