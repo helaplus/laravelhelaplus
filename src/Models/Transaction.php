@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
-    private $table = 'helaplus_transaction';
-    use HasFactory;
+    protected $table = 'helaplus_transaction';
+    use HasFactory;  
 }
