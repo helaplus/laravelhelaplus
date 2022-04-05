@@ -18,11 +18,14 @@ $ composer require helaplus/laravelhelaplus
 ## Usage
 Add the following Configs
 ``` bash
-B2B_INITIATOR
-B2B_PASSWORD
-B2B_SOURCE
-B2B_RESULT_URL
-B2B_CALLBACK_URL
+B2B_INITIATOR="{your_initiator}"
+B2B_PASSWORD="{your_password}"
+B2B_SOURCE={source_paybll}
+B2B_RESULT_URL={result_url}
+B2B_CALLBACK_URL={callback_url}
+B2B_SECURITY_CREDENTIAL={security_credential}
+HELAPLUS_API_TOKEN="your_helaplus_api_token"
+HELAPLUS_B2B_ENDPOINT={helaplus_endpoint}
 ```
 ## Change log
 
