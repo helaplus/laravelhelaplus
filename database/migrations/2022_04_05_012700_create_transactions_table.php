@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('type');
             $table->string('amount');
             $table->string('recipient');
-            $table->string('reference')->nullable();
+            $table->string('reference')->nullable(); 
+            $table->integer('status')->default(0); //0 for initiated, 1 accepted , 2 for successful, 3 for failed
             $table->text('details')->nullable();
             $table->timestamps();
         });
