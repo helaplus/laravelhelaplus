@@ -14,8 +14,6 @@ Via Composer
 ``` bash
 $ composer require helaplus/laravelhelaplus
 ```
-
-## Usage
 Add the following Configs
 ``` bash
 B2B_INITIATOR="{your_initiator}"
@@ -27,6 +25,30 @@ B2B_SECURITY_CREDENTIAL={security_credential}
 HELAPLUS_API_TOKEN="your_helaplus_api_token"
 HELAPLUS_B2B_ENDPOINT={helaplus_endpoint}
 ```
+
+
+Publish the config file. This will publish the config file to config/laravelhelaplus
+
+
+``` bash
+$ php artisan vendor:publish 
+
+Then select laravelhelaplus
+
+$ php artisan migrate 
+
+ //This will create a table for helaplus_transactions
+```
+
+## Usage
+
+``` bash
+use Helaplus\Laravelhelaplus\Http\B2BPaymentController;
+
+$response = B2BPaymentController::sendB2BPayment($amount,$recipient_paybill,$commandId,$reference);
+     
+```
+
 ## Change log
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.
