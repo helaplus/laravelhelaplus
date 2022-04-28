@@ -58,12 +58,9 @@ class B2BPaymentController extends Controller {
     }
 
 
-    public function initiateRevenueSettlement($amount,$shortcode)
+    public static function initiateRevenueSettlement($amount,$shortcode)
     {
-        print_r(config('laravelhelaplus.c2b.helaplus_c2b_endpoint'));
-        exit;
-        $command_id = "OrgRevenueSettlement";
-
+ 
         $data = [
             'Initiator'=> config('laravelhelaplus.c2b.initiator'),
             'SecurityCredential'=> config('laravelhelaplus.c2b.securitycredential'),
