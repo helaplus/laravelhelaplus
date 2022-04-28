@@ -2,6 +2,7 @@
 
 namespace Helaplus\Laravelhelaplus\Http;
 
+use Helaplus\Laravelhelaplus\Models\helaplusLog;
 use Helaplus\Laravelhelaplus\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -40,6 +41,11 @@ class B2BPaymentController extends Controller {
     }
 
     public static function c2bReceiver(Request $request){
+        $helaplusLog = new helaplusLog();
+        $helaplusLog->slug = 'b2b_c2bReceiver';
+        $helaplusLog->endpoint = '/helaplusb2b/c2bReceiver';
+        $helaplusLog->payload = $request->all();
+        $helaplusLog->save(); 
 
     }
 
