@@ -60,7 +60,7 @@ class B2BPaymentController extends Controller {
 
     public static function initiateRevenueSettlement($amount,$shortcode)
     {
- 
+
         $data = [
             'Initiator'=> config('laravelhelaplus.c2b.initiator'),
             'SecurityCredential'=> config('laravelhelaplus.c2b.securitycredential'),
@@ -85,7 +85,7 @@ class B2BPaymentController extends Controller {
         $response = Http::withToken(
             config('laravelhelaplus.helaplus_api_token')
         )->post(config('laravelhelaplus.c2b.helaplus_c2b_endpoint'),$data)->body();
-        $helaplusLog->response = $response->body();
+        $helaplusLog->response = $response; 
         $helaplusLog->save();
         print_r($response);
         exit;
