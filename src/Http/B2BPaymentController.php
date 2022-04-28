@@ -3,9 +3,11 @@
 namespace Helaplus\Laravelhelaplus\Http;
 
 use Helaplus\Laravelhelaplus\Models\Transaction;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class B2BPaymentController extends Controller {
+
     public static function sendB2BPayment($amount,$receiver,$command,$reference){
         $data = [
             'Initiator'=> config('laravelhelaplus.b2b.initiator'),
@@ -34,6 +36,10 @@ class B2BPaymentController extends Controller {
         return Http::withToken(
             config('laravelhelaplus.helaplus_api_token')
         )->post(config('laravelhelaplus.b2b.helaplus_b2b_endpoint'),$data)->body();
+
+    }
+
+    public static function c2bReceiver(Request $request){
 
     }
 
