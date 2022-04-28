@@ -44,8 +44,8 @@ class B2BPaymentController extends Controller {
         $helaplusLog = new helaplusLog();
         $helaplusLog->slug = 'b2b_c2bReceiver';
         $helaplusLog->endpoint = '/helaplusb2b/c2bReceiver';
-        $helaplusLog->payload = $request->all();
-        $helaplusLog->save(); 
+        $helaplusLog->payload = json_encode($request->all()); 
+        $helaplusLog->save();
 
     }
 
