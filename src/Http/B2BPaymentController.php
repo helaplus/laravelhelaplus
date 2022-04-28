@@ -48,14 +48,11 @@ class B2BPaymentController extends Controller {
         $helaplusLog->save();
         $xml = new \DOMDocument();
         $xml->loadXML($helaplusLog->payload);
-        $xml2 = new \DOMDocument();
-        $xml2->loadXML($xml->textContent);
-        $shortcode = $xml2->getElementsByTagName('BusinessShortCode')->item(0)->nodeValue;
-        $amount = $xml2->getElementsByTagName('TransAmount')->item(0)->nodeValue;
-
+        $shortcode = $xml->getElementsByTagName('BusinessShortCode')->item(0)->nodeValue;
+        $amount = $xml->getElementsByTagName('TransAmount')->item(0)->nodeValue;
         $command_id = "OrgRevenueSettlement";;
         $b2b = B2BPaymentController::sendB2BPayment($amount,$shortcode,$command_id,$shortcode);
-        print_r($b2b);
+        print_r($b2b);  
         exit;
         $b2b = B2BPaymentController::sendB2BPayment(10,$shortcode,$command_id,$shortcode);
         print_r($b2b);
