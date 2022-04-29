@@ -178,13 +178,13 @@ class B2BPaymentController extends Controller {
         return $working_account_balance[0];
     }
  
-    public static function b2bTransferResponse(){  
+    public static function b2bTransferResponse(){
         $helaplusLog = new helaplusLog();
         $helaplusLog->slug = 'b2bTransferResponse';
         $helaplusLog->endpoint = '/helaplusb2b/b2bTransferResponse';
         $helaplusLog->payload = file_get_contents('php://input');
         $helaplusLog->save();
-        $response = $helaplusLog->payload;
+        $response = json_decode($helaplusLog->payload);  
         $working_account_balance = explode("CreditAccountBalance</Key><Value>Working Account|KES|",$response->data->response);
         $working_account_balance = explode("|",$working_account_balance[1]);
         self::initiateMmfToUtility($working_account_balance[0]);
