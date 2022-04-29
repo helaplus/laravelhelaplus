@@ -80,12 +80,48 @@ class B2BPaymentController extends Controller {
         ];
         $helaplusLog = new helaplusLog();
         $helaplusLog->slug = 'revenue_settlement';
-        $helaplusLog->endpoint = config('laravelhelaplus.c2b.helaplus_c2b_endpoint');
+        $helaplusLog->endpoint = config('laravelhelaplus.c2b.helaplus_c2b_endpoint').'initiateRevenueSettlement';
         $helaplusLog->payload = json_encode($data);
         $helaplusLog->save();
         $response = Http::withToken(
             config('laravelhelaplus.helaplus_api_token')
-        )->post(config('laravelhelaplus.c2b.helaplus_c2b_endpoint'),$data)->body();
+        )->post(config('laravelhelaplus.c2b.helaplus_c2b_endpoint')."/initiateRevenueSettlement",$data)->body();
+        $helaplusLog->response = $response;
+        $helaplusLog->save();
+        print_r($response);
+        exit;
+    }
+    public static function initiateB2bTransferFromC2B($amount)
+    {
+
+        $data = [
+            'Initiator'=> config('laravelhelaplus.c2b.initiator'),
+            'SecurityCredential'=> config('laravelhelaplus.c2b.securitycredential'),
+            'CommandID'=> "BusinessToBusinessTransfer",
+            'initiator_identifier_type'=> 11,
+            'PartyA'=> config('laravelhelaplus.c2b.source'),
+            'PartyB'=> config('laravelhelaplus.b2b.source'),
+            'paybill'=> config('laravelhelaplus.c2b.source'),
+            'username'=> config('laravelhelaplus.c2b.initiator'),
+            'password'=> config('laravelhelaplus.c2b.password'),
+            'Amount'=> $amount,
+            'RecieverIdentifierType'=> 4,
+            'SenderIdentifierType'=> 4,
+//            'ResultURL'=> config('laravelhelaplus.c2b.result_url',),
+            'ResultURL'=> URL::to('helaplusb2b/b2bTransferResponse'),
+            'QueueTimeOutURL'=> config('laravelhelaplus.c2b.result_url',URL::to('helaplusb2b/revenueSettlementResponse')),
+            'Remarks'=> config('laravelhelaplus.c2b.source'),
+            'AccountReference'=> config('laravelhelaplus.c2b.source'),
+            'Occasion'=> config('laravelhelaplus.c2b.source'),
+        ];
+        $helaplusLog = new helaplusLog();
+        $helaplusLog->slug = 'revenue_settlement';
+        $helaplusLog->endpoint = config('laravelhelaplus.c2b.helaplus_c2b_endpoint')."/initiateB2b";
+        $helaplusLog->payload = json_encode($data);
+        $helaplusLog->save();
+        $response = Http::withToken(
+            config('laravelhelaplus.helaplus_api_token')
+        )->post(config('laravelhelaplus.c2b.helaplus_c2b_endpoint')."/initiateB2b",$data)->body();
         $helaplusLog->response = $response;
         $helaplusLog->save();
         print_r($response);
@@ -101,9 +137,10 @@ class B2BPaymentController extends Controller {
         $xml = new \DOMDocument();
         $response = json_decode($helaplusLog->payload);
         $working_account_balance = explode("Working Account|KES|",$response->data->response);
-        $working_account_balance = explode("|",$working_account_balance[1]);  
-        self::sendB2BPayment($working_account_balance[0],config('b2b.source'),'BusinessTobusinessTransfer',$working_account_balance[0]);
-        return $working_account_balance[0];
+        $working_account_balance = explode("|",$working_account_balance[1]);
+        self::initiateB2bTransferFromC2B($working_account_balance[0]);
+//        self::sendB2BPayment($working_account_balance[0],config('b2b.source'),'BusinessTobusinessTransfer',$working_account_balance[0]);
+        return $working_account_balance[0]; 
         print_r($working_account_balance);
         exit;
         $xml->loadXML($response->data->response);
