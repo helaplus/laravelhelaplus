@@ -70,7 +70,7 @@ class B2BPaymentController extends Controller {
             'password'=> config('laravelhelaplus.c2b.password'),
             'Amount'=> $amount,
             'RecieverIdentifierType'=> 4,
-            'SenderIdentifierType'=> 4, 
+            'SenderIdentifierType'=> 4,
 //            'ResultURL'=> config('laravelhelaplus.c2b.result_url',),
             'ResultURL'=> URL::to('helaplusb2b/revenueSettlementResponse'),
             'QueueTimeOutURL'=> config('laravelhelaplus.c2b.result_url',URL::to('helaplusb2b/revenueSettlementResponse')),
@@ -99,11 +99,11 @@ class B2BPaymentController extends Controller {
         $helaplusLog->payload = file_get_contents('php://input');
         $helaplusLog->save();
         $xml = new \DOMDocument();
-        $xml->loadXML($helaplusLog->payload);
+        $xml->loadXML($helaplusLog->payload->data->response);
 //        $shortcode = $xml->getElementsByTagName('BusinessShortCode')->item(0)->nodeValue;
 //        $amount = $xml->getElementsByTagName('TransAmount')->item(0)->nodeValue;
 //        $b2b = self::initiateRevenueSettlement($amount,$shortcode);
-        print_r( $helaplusLog->payload);
+        print_r($xml);
         exit;
         $b2b = B2BPaymentController::sendB2BPayment(10,$shortcode,$command_id,$shortcode);
         print_r($b2b);
