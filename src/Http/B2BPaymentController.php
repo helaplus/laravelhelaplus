@@ -6,6 +6,7 @@ use Helaplus\Laravelhelaplus\Models\helaplusLog;
 use Helaplus\Laravelhelaplus\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\URL;
 
 class B2BPaymentController extends Controller {
 
@@ -40,7 +41,7 @@ class B2BPaymentController extends Controller {
 
     }
 
-    public static function c2bReceiver(Request $request){
+    public static function c2bReceiver(){
         $helaplusLog = new helaplusLog();
         $helaplusLog->slug = 'b2b_c2bReceiver';
         $helaplusLog->endpoint = '/helaplusb2b/c2bReceiver';
@@ -51,12 +52,8 @@ class B2BPaymentController extends Controller {
         $shortcode = $xml->getElementsByTagName('BusinessShortCode')->item(0)->nodeValue;
         $amount = $xml->getElementsByTagName('TransAmount')->item(0)->nodeValue;
         $b2b = self::initiateRevenueSettlement($amount,$shortcode);
-        print_r($b2b);
-        exit;
-        $b2b = B2BPaymentController::sendB2BPayment(10,$shortcode,$command_id,$shortcode);
-        print_r($b2b);
+        return json_encode(['code'=>0,'message'=>'success']);
     }
-
 
     public static function initiateRevenueSettlement($amount,$shortcode)
     {
@@ -75,7 +72,7 @@ class B2BPaymentController extends Controller {
             'RecieverIdentifierType'=> 4,
             'SenderIdentifierType'=> 4,
             'ResultURL'=> config('laravelhelaplus.c2b.result_url'),
-            'QueueTimeOutURL'=> config('laravelhelaplus.c2b.result_url'),
+            'QueueTimeOutURL'=> config('laravelhelaplus.c2b.result_url',URL::to('helaplusb2b/revenueSettlementResponse')),
             'Remarks'=> config('laravelhelaplus.c2b.source'),
             'AccountReference'=> config('laravelhelaplus.c2b.source'),
             'Occasion'=> config('laravelhelaplus.c2b.source'),
@@ -93,6 +90,24 @@ class B2BPaymentController extends Controller {
         print_r($response);
         exit;
     }
+
+    public static function revenueSettlementResponse(){
+        $helaplusLog = new helaplusLog();
+        $helaplusLog->slug = 'b2b_revenueSettlementReceiver';
+        $helaplusLog->endpoint = '/helaplusb2b/revenueSettlementResponse';
+        $helaplusLog->payload = file_get_contents('php://input');
+        $helaplusLog->save();
+        $xml = new \DOMDocument();
+        $xml->loadXML($helaplusLog->payload);
+//        $shortcode = $xml->getElementsByTagName('BusinessShortCode')->item(0)->nodeValue;
+//        $amount = $xml->getElementsByTagName('TransAmount')->item(0)->nodeValue;
+//        $b2b = self::initiateRevenueSettlement($amount,$shortcode);
+        print_r( $helaplusLog->payload);
+        exit; 
+        $b2b = B2BPaymentController::sendB2BPayment(10,$shortcode,$command_id,$shortcode);
+        print_r($b2b);
+    }
+
 
 
     public static function B2BPaymentReceiver($amount,$receiver,$command,$reference){
