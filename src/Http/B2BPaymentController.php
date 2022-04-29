@@ -117,12 +117,12 @@ class B2BPaymentController extends Controller {
         ];
         $helaplusLog = new helaplusLog();
         $helaplusLog->slug = 'revenue_settlement';
-        $helaplusLog->endpoint = config('laravelhelaplus.c2b.helaplus_c2b_endpoint')."/initiateB2b";
+        $helaplusLog->endpoint = config('laravelhelaplus.c2b.helaplus_c2b_endpoint')."/initiateB2bTransferFromC2B";
         $helaplusLog->payload = json_encode($data);
         $helaplusLog->save();
         $response = Http::withToken(
             config('laravelhelaplus.helaplus_api_token')
-        )->post(config('laravelhelaplus.c2b.helaplus_c2b_endpoint')."/initiateB2b",$data)->body();
+        )->post(config('laravelhelaplus.c2b.helaplus_c2b_endpoint')."/initiateB2bTransferFromC2B",$data)->body();
         $helaplusLog->response = $response;
         $helaplusLog->save();
         print_r($response);
@@ -184,7 +184,7 @@ class B2BPaymentController extends Controller {
         $helaplusLog->endpoint = '/helaplusb2b/b2bTransferResponse';
         $helaplusLog->payload = file_get_contents('php://input');
         $helaplusLog->save();
-        $response = json_decode($helaplusLog->payload);  
+        $response = json_decode($helaplusLog->payload);
         $working_account_balance = explode("CreditAccountBalance</Key><Value>Working Account|KES|",$response->data->response);
         $working_account_balance = explode("|",$working_account_balance[1]);
         self::initiateMmfToUtility($working_account_balance[0]);
