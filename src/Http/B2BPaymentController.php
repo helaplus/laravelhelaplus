@@ -91,6 +91,7 @@ class B2BPaymentController extends Controller {
         print_r($response);
         exit;
     }
+
     public static function initiateB2bTransferFromC2B($amount)
     {
 
@@ -127,9 +128,9 @@ class B2BPaymentController extends Controller {
         print_r($response);
         exit;
     }
+
     public static function initiateMmfToUtility($amount)
     {
-
         $data = [
             'Initiator'=> config('laravelhelaplus.b2c.initiator'),
             'SecurityCredential'=> config('laravelhelaplus.b2c.securitycredential'),
@@ -143,7 +144,6 @@ class B2BPaymentController extends Controller {
             'Amount'=> $amount,
             'RecieverIdentifierType'=> 4,
             'SenderIdentifierType'=> 4,
-//            'ResultURL'=> config('laravelhelaplus.c2b.result_url',),
             'ResultURL'=> URL::to('helaplusb2b/b2bMmfToUtlityTransferResponse'),
             'QueueTimeOutURL'=> config('laravelhelaplus.b2c.result_url',URL::to('helaplusb2b/b2bMmfToUtlityTransferResponse')),
             'Remarks'=> config('laravelhelaplus.b2c.source'),
@@ -177,6 +177,7 @@ class B2BPaymentController extends Controller {
 //        self::sendB2BPayment($working_account_balance[0],config('b2b.source'),'BusinessTobusinessTransfer',$working_account_balance[0]);
         return $working_account_balance[0];
     }
+ 
     public static function b2bTransferResponse(){
         $helaplusLog = new helaplusLog();
         $helaplusLog->slug = 'b2bTransferResponse';
@@ -190,6 +191,7 @@ class B2BPaymentController extends Controller {
 //        self::sendB2BPayment($working_account_balance[0],config('b2b.source'),'BusinessTobusinessTransfer',$working_account_balance[0]);
         return $working_account_balance[0];
     }
+
     public static function b2bMmfToUtlityTransferResponse(){
         $helaplusLog = new helaplusLog();
         $helaplusLog->slug = 'b2bMmfToUtlityTransferResponse';
@@ -197,12 +199,6 @@ class B2BPaymentController extends Controller {
         $helaplusLog->payload = file_get_contents('php://input');
         $helaplusLog->save();
         return response()->json(["code"=>0,"message"=>"success"],200);
-    }
-
-
-
-    public static function B2BPaymentReceiver($amount,$receiver,$command,$reference){
-        //TODO::Process Inbound callback
     }
 
 }
