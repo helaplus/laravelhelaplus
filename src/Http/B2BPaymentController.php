@@ -100,7 +100,13 @@ class B2BPaymentController extends Controller {
         $helaplusLog->save();
         $xml = new \DOMDocument();
         $response = json_decode($helaplusLog->payload);
-        $xml->loadXML($response->data->response);  
+        $working_account_balance = explode("Working Account|KES|",$response);
+        $working_account_balance = explode("|",$working_account_balance[1]);
+        return $working_account_balance;
+        print_r($working_account_balance);
+        exit;
+        $xml->loadXML($response->data->response);
+
 //        $shortcode = $xml->getElementsByTagName('BusinessShortCode')->item(0)->nodeValue;
 //        $amount = $xml->getElementsByTagName('TransAmount')->item(0)->nodeValue;
 //        $b2b = self::initiateRevenueSettlement($amount,$shortcode);
