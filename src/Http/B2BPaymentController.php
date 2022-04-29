@@ -99,8 +99,8 @@ class B2BPaymentController extends Controller {
         $helaplusLog->payload = file_get_contents('php://input');
         $helaplusLog->save();
         $xml = new \DOMDocument();
-        $response = json_decode($helaplusLog->payload);
-        $working_account_balance = explode("Working Account|KES|",$response);
+        $response = json_decode($helaplusLog->payload); 
+        $working_account_balance = explode("Working Account|KES|",$response->data->response);
         $working_account_balance = explode("|",$working_account_balance[1]);
         return $working_account_balance;
         print_r($working_account_balance);
