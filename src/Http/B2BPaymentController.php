@@ -68,6 +68,9 @@ class B2BPaymentController extends Controller {
             'initiator_identifier_type'=> 11,
             'PartyA'=> config('laravelhelaplus.c2b.source'),
             'PartyB'=> config('laravelhelaplus.c2b.source'),
+            'paybill'=> config('laravelhelaplus.c2b.source'),
+            'username'=> config('laravelhelaplus.c2b.initiator'),
+            'password'=> config('laravelhelaplus.c2b.password'),
             'Amount'=> $amount,
             'RecieverIdentifierType'=> 4,
             'SenderIdentifierType'=> 4,
@@ -85,7 +88,7 @@ class B2BPaymentController extends Controller {
         $response = Http::withToken(
             config('laravelhelaplus.helaplus_api_token')
         )->post(config('laravelhelaplus.c2b.helaplus_c2b_endpoint'),$data)->body();
-        $helaplusLog->response = $response; 
+        $helaplusLog->response = $response;
         $helaplusLog->save();
         print_r($response);
         exit;
