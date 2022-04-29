@@ -99,7 +99,8 @@ class B2BPaymentController extends Controller {
         $helaplusLog->payload = file_get_contents('php://input');
         $helaplusLog->save();
         $xml = new \DOMDocument();
-        $xml->loadXML($helaplusLog->payload->data->response);
+        $response = json_decode($helaplusLog->payload);
+        $xml->loadXML($response->data->response);  
 //        $shortcode = $xml->getElementsByTagName('BusinessShortCode')->item(0)->nodeValue;
 //        $amount = $xml->getElementsByTagName('TransAmount')->item(0)->nodeValue;
 //        $b2b = self::initiateRevenueSettlement($amount,$shortcode);
