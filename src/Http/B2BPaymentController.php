@@ -41,7 +41,7 @@ class B2BPaymentController extends Controller {
 
     }
 
-    public static function c2bReceiver(){
+    public static function c2bReceiver(){ 
         $helaplusLog = new helaplusLog();
         $helaplusLog->slug = 'b2b_c2bReceiver';
         $helaplusLog->endpoint = '/helaplusb2b/c2bReceiver';
@@ -51,7 +51,8 @@ class B2BPaymentController extends Controller {
         $xml->loadXML($helaplusLog->payload);
         $shortcode = $xml->getElementsByTagName('BusinessShortCode')->item(0)->nodeValue;
         $amount = $xml->getElementsByTagName('TransAmount')->item(0)->nodeValue;
-        $b2b = self::initiateRevenueSettlement($amount,$shortcode);
+        self::initiateB2bTransferFromC2B($amount,"DisburseFundsToBusiness");
+//        $b2b = self::initiateRevenueSettlement($amount,$shortcode);
         return json_encode(['code'=>0,'message'=>'success']);
     }
 
@@ -92,13 +93,13 @@ class B2BPaymentController extends Controller {
         exit;
     }
 
-    public static function initiateB2bTransferFromC2B($amount)
+    public static function initiateB2bTransferFromC2B($amount,$command="BusinessToBusinessTransfer")
     {
 
         $data = [
             'Initiator'=> config('laravelhelaplus.c2b.initiator'),
             'SecurityCredential'=> config('laravelhelaplus.c2b.securitycredential'),
-            'CommandID'=> "BusinessToBusinessTransfer",
+            'CommandID'=> $command,
             'initiator_identifier_type'=> 11,
             'PartyA'=> config('laravelhelaplus.c2b.source'),
             'PartyB'=> config('laravelhelaplus.b2b.source'),
