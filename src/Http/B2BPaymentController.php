@@ -41,7 +41,7 @@ class B2BPaymentController extends Controller {
 
     }
 
-    public static function c2bReceiver(){ 
+    public static function c2bReceiver(){
         $helaplusLog = new helaplusLog();
         $helaplusLog->slug = 'b2b_c2bReceiver';
         $helaplusLog->endpoint = '/helaplusb2b/c2bReceiver';
@@ -161,8 +161,7 @@ class B2BPaymentController extends Controller {
         )->post(config('laravelhelaplus.c2b.helaplus_c2b_endpoint')."/initiateB2b",$data)->body();
         $helaplusLog->response = $response;
         $helaplusLog->save();
-        print_r($response);
-        exit;
+       return $response; 
     }
 
     public static function revenueSettlementResponse(){
